@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:rx_notifier/rx_notifier.dart';
 import 'package:sizer/sizer.dart';
 import 'package:teste_work/app/controller/home_controller/home_controller.dart';
-import 'package:rx_notifier/rx_notifier.dart';
-import 'package:http/http.dart' as http;
 import 'package:teste_work/app/data/provider/ApiDog.dart';
 import 'package:teste_work/app/data/repository/home_repository.dart';
 
@@ -49,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(10),
                         onTap: () {
-                          Navigator.pushNamed(context, '/breed', arguments: rxController.dogBreedList.value.message[index]);
+                          Get.toNamed('/breed', arguments: rxController.dogBreedList.value.message[index]);
                         },
                         child: Container(
                           height: 08.h,

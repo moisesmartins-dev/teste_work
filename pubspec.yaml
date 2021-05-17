@@ -33,7 +33,7 @@ dependencies:
   sizer: ^2.0.12
   #gerenciamento de estado ↓
   rx_notifier: ^1.1.0
-  #gerenciamento de rotas e injecao de dependências ↓
+  #gerenciamento de rotas e injecao de dependências e estado(mas optei pelo rx_notifier) ↓
   get: ^4.1.4
   #criação de splash screen nativa ↓
   flutter_native_splash: ^1.1.8+4

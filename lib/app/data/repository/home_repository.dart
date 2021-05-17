@@ -6,7 +6,7 @@ class HomeRepository {
 
   HomeRepository({@required this.apiDog}) : assert(apiDog != null);
 
-  getAllBreeds(){
+  getAllBreeds() {
     return apiDog.fetchAllBreedNames();
   }
 }

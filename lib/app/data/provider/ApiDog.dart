@@ -11,7 +11,6 @@ class ApiDog {
   ApiDog({@required this.httpClient});
 
   //lista nomes das raças
-  // ignore: missing_return
   Future<DogBreedsModel> fetchAllBreedNames() async {
     try {
       var response = await httpClient.get(Uri.parse(baseUrl + 's/list'));
