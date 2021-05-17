@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:sizer/sizer.dart';
 import 'package:rx_notifier/rx_notifier.dart';
+import 'package:sizer/sizer.dart';
 import 'package:teste_work/app/controller/breed_controller/breed_controller.dart';
 import 'package:teste_work/app/data/provider/ApiDog.dart';
 import 'package:teste_work/app/data/repository/breed_repository.dart';
@@ -12,7 +13,8 @@ class BreedPage extends StatefulWidget {
 }
 
 class _BreedPage extends State<BreedPage> {
-  final BreedController rxController = BreedController(breedRepository: BreedRepository(apiDog: ApiDog(httpClient: http.Client())));
+  final BreedController rxController =
+      BreedController(breedRepository: BreedRepository(apiDog: ApiDog(httpClient: http.Client())));
   ScrollController scrollController = ScrollController();
   String breed;
 
@@ -30,22 +32,20 @@ class _BreedPage extends State<BreedPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    breed = Get.arguments;
+    rxController.init(breed);
+    /*  como a API não possui paginação, tive que implementar na mão. A screen de cada raça ja começa com 10.
+        scrollController vai ouvir a rolagem da tela e toda vez que a posição de rolagem for igual a parte inferior da tela
+        ele aumenta em 10 o tamanho da lista  ↓*/
     scrollController.addListener(
       () {
         if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+          //se o tamanho da lista de exibicao for menor do que a lista de fotos da raça, ele aumenta.
           if (rxController.sizeList.value < rxController.dogBreedPhotoList.value.message.length) {
             rxController.changeSize();
-            print('1 - sizeList => ' + rxController.sizeList.value.toString());
-            print('2 - dogBreedListSize => ' + rxController.dogBreedPhotoList.value.message.length.toString());
-            print('3 - is remaining => ' + rxController.sizeRemaining.value.toString());
-          } else if (rxController.sizeList.value >= rxController.dogBreedPhotoList.value.message.length) {
+          } //se maior ou igual, ele exibi um snackBar informando o fim da list
+          else if (rxController.sizeList.value >= rxController.dogBreedPhotoList.value.message.length) {
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            print('1 - sizeList => ' + rxController.sizeList.value.toString());
-            print('2 - dogBreedListSize => ' + rxController.dogBreedPhotoList.value.message.length.toString());
-            print('3 - is remaining => ' + rxController.sizeRemaining.value.toString());
-            print('nao tem');
-            // showSnack();
           }
         }
       },
@@ -55,13 +55,10 @@ class _BreedPage extends State<BreedPage> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context).settings.arguments;
-    rxController.init(args);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          args,
+          breed,
           style: TextStyle(
             fontSize: 15.sp,
           ),
@@ -79,7 +76,6 @@ class _BreedPage extends State<BreedPage> {
                     ? ListView.builder(
                         controller: scrollController,
                         itemCount: rxController.sizeList.value,
-                        // itemCount: rxController.dogBreedList.value.message.length,
                         itemBuilder: (context, index) {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,

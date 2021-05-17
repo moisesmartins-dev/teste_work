@@ -11,10 +11,11 @@ class BreedController {
   //lista de fotos
   var dogBreedPhotoList = RxNotifier<PhotoByBreedModel>(null);
 
-  //paginação de 10 itens
+  //paginação de 10 itens e tamanho da lista inicial(lista de exibição)
   var sizeList = RxNotifier<int>(10);
-  var numText = RxNotifier<int>(0);
   var loading = RxNotifier<bool>(false);
+
+  //tamanha restante, resultado da lista de fotos - lista de exibição
   var sizeRemaining = RxNotifier<int>(0);
   String breed;
 
@@ -22,15 +23,12 @@ class BreedController {
     breedRepository.getAllPhotosByBreed(breed).then(
       (value) {
         dogBreedPhotoList.value = value;
-        // 10 por padrao
+        /*10 por padrao.
+          se o tamanho da lista de fotos da raça for menor do que 10, o tamanho será o tamanho da lista de fotos da raça */
         if (dogBreedPhotoList.value.message.length < sizeList.value) {
           sizeList.value = dogBreedPhotoList.value.message.length;
         }
         sizeRemaining.value = dogBreedPhotoList.value.message.length - sizeList.value;
-        print('1 - sizeList => ' + sizeList.value.toString());
-        print('2 - dogBreedListSize => ' + dogBreedPhotoList.value.message.length.toString());
-        print('3 - is remaining => ' + sizeRemaining.value.toString());
-
         loading.value = value.message.isNotEmpty;
       },
     );
@@ -39,10 +37,18 @@ class BreedController {
   void changeSize() {
     sizeRemaining.value = dogBreedPhotoList.value.message.length - sizeList.value;
     if (sizeRemaining.value < 10) {
-      sizeList.value = dogBreedPhotoList.value.message.length;
+      sizeList.value = sizeList.value + sizeRemaining.value;
     } else {
-      sizeRemaining.value = dogBreedPhotoList.value.message.length - sizeList.value;
       sizeList.value = sizeList.value + 10;
     }
   }
+
+/*
+    Toda vez que chamar changeSize(), acontecera o seguinte
+    - Ele vai obter sizeRemaining que será o tamanho restante a partir resultado da subtração da lista de fotos pela lista de exibição
+
+    Se sizeRemaining for menor do 10, neste caso o tamanho da lista de exibição sera somado mais o tamanho restante(sizeRemaining)
+
+    Senão o tamanho da lista de exibição sera incrementa em 10
+    */
 }
