@@ -4,6 +4,8 @@ Teste WORK
 
 [Instrução do Teste](https://github.com/moisesmartins14/teste_work/blob/master/case_mobile.pdf)
 
+[Link do APK](https://github.com/moisesmartins14/teste_work/blob/master/app-release.apk)
+
 ## Descricao do Teste
 Desafio Mobile - WORK
 
