@@ -6,6 +6,10 @@ Teste WORK
 
 [Link do APK](https://github.com/moisesmartins14/teste_work/blob/master/app-release.apk)
 
+Flutter v2.0.3 channel stable
+
+Dart v2.12.2 channel stable
+
 ## Descricao do Teste
 Desafio Mobile - WORK
 
